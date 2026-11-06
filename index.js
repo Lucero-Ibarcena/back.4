@@ -133,28 +133,80 @@
 // (Pista: usá `await` para esperar cada promesa antes de continuar.)
 
 
-function LoadUser() {
-    return new Promise((resolve) => {
-        setTimeout(() => resolve("Usuario conectado"), 1000);
-    });
-};
+//function LoadUser() {
+//    return new Promise((resolve) => {
+//        setTimeout(() => resolve("Usuario conectado"), 1000);
+//    });
+//};
 
-function LoadNotifications() {
-    return new Promise((resolve) => {
-        setTimeout(() => resolve(["Nitificación 1", "Notificación 2"]), 1500);
-    });
-};
+//function LoadNotifications() {
+//    return new Promise((resolve) => {
+//        setTimeout(() => resolve(["Nitificación 1", "Notificación 2"]), 1500);
+//    });
+//};
 
-async function showDashboard() {
-    console.log("Dashboard cargando...")
+//async function showDashboard() {
+//    console.log("Dashboard cargando...")
 
-    const user = await LoadUser();
-    console.log(user);
+//    const user = await LoadUser();
+//    console.log(user);
 
-    const notifications = await LoadNotifications();
-    console.log("Notificaciones recibidas:", notifications);
+//    const notifications = await LoadNotifications();
+//    console.log("Notificaciones recibidas:", notifications);
 
-    console.log("Dashboard listo!");
-}
+//    console.log("Dashboard listo!");
+//}
 
-showDashboard();
+//showDashboard();
+
+
+
+
+//EXPRESS
+
+import express from 'express';
+
+const app = express();
+
+app.use(express.json());
+
+app.use((req, res, next) => {
+  console.log(`Middleware → ${req.method} ${req.url}`);
+  next(); // ¡Importante! next() continúa hacia la siguiente función o ruta.
+});
+
+// Datos de ejemplo (simulando una base de datos)
+const users = [
+    { id: 1, name: 'Ana' },
+    { id: 2, name: 'Luis' },
+    { id: 3, name: 'Carla' },
+  ];
+
+app.get('/', (req, res) => {
+
+    res.send("Listo")
+})
+
+app.get('/users', (req, res) => {
+    res.json(users);
+    res.send("Listo")
+})
+
+app.post('/newUser', (req, res) => {
+    const nuevoUsurio = req.body;
+    
+    //LOGICA DEL NUEVO USUARIO (ID)
+    users.push(nuevoUsurio);
+    res.status(201).json(nuevoUsurio);
+})
+
+const PORT = 3000;
+
+app.listen(PORT, () => {
+  console.log(`Servidor corrinedo en http://localhost:${PORT}`);
+  //OTRA FORMA
+  //console.log(`Servidor corrinedo en` PORT);
+});
+
+
+
